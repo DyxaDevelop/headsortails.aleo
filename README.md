@@ -55,7 +55,7 @@ git clone https://github.com/DyxaDevelop/headsortails.aleo
 2. Navigate to the repository directory:
 
 ```shell
-cd [repository name]
+cd https://github.com/DyxaDevelop/headsortails.aleo
 ```
 
 3. Compile the contract using Aleo CLI:
