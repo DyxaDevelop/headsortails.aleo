@@ -42,7 +42,7 @@ To interact with this smart contract, you need to have the Aleo SDK installed.
 
 ### Prerequisites
 
-- Install [Aleo SDK](https://developer.aleo.org/developer/getting_started/installation)
+- Install [Aleo SDK](https://developer.aleo.org/getting_started)
 
 ### Installation
 
