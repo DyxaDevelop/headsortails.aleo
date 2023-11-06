@@ -2,6 +2,8 @@
 
 Welcome to the Heads or Tails blockchain game, a simple and entertaining betting game built on the Aleo platform. This game leverages the privacy features of Aleo to ensure a fair and secure gaming experience.
 
+#### Discord: dyxa\_
+
 ## Introduction
 
 Players can participate in a virtual coin toss game where they bet an amount of tokens on either heads or tails. The game is deterministic and the outcome is based on pseudo-random number generation within the smart contract.
