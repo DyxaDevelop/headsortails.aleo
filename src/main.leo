@@ -13,10 +13,10 @@ program headsortails.aleo {
     // Define a structure representing the state of a single Heads or Tails game session.
     struct GameSession {
         player: address,       // The address of the player participating in the session.
-        betAmount: u64,        // The amount of currency bet in the game.
-        playerChoice: u8,      // The player's choice: 0 for Heads or 1 for Tails.
+        bet_amount: u64,        // The amount of currency bet in the game.
+        player_choice: u8,      // The player's choice: 0 for Heads or 1 for Tails.
         result: u8,            // The result of the game: 0 for Heads or 1 for Tails.
-        hasWon: bool,          // Flag to indicate if the player has won the game.
+        has_won: bool,          // Flag to indicate if the player has won the game.
     }
 
     // A mapping to keep track of game sessions indexed by a unique field.
@@ -40,30 +40,30 @@ program headsortails.aleo {
     }
 
     // Function to initiate a new game session.
-    transition initiateGameSession(public sessionID: field, choice: u8, betAmount: u64) {
-        assert(betAmount > 0u64); // Ensure the bet amount is greater than zero.
+    transition initiateGameSession(public sessionID: field, choice: u8, bet_amount: u64) {
+        assert(bet_amount > 0u64); // Ensure the bet amount is greater than zero.
         assert(choice == 0u8 || choice == 1u8); // Ensure the choice is valid (0 or 1).
 
         // Set up a new game session with the provided details.
         let new_session: GameSession = GameSession {
             player: self.caller,
-            betAmount: betAmount,
-            playerChoice: choice,
+            bet_amount: bet_amount,
+            player_choice: choice,
             result: 0u8, // Result is initially 0, will be set later.
-            hasWon: false, // Initially, the player has not won.
+            has_won: false, // Initially, the player has not won.
         };
 
         // Proceed to finalize the game session with the new session details.
-        return then finalize (sessionID, new_session, betAmount);
+        return then finalize (sessionID, new_session, bet_amount);
     }
 
     // Finalize the initiation of a game session.
-    finalize initiateGameSession(sessionID: field, new_session: GameSession, betAmount: u64) {
+    finalize initiateGameSession(sessionID: field, new_session: GameSession, bet_amount: u64) {
         let player_balance: u64 = Mapping::get(userBalances, new_session.player); // Get the player's current balance.
-        assert(player_balance >= betAmount); // Ensure the player has sufficient balance to place the bet.
+        assert(player_balance >= bet_amount); // Ensure the player has sufficient balance to place the bet.
 
         // Deduct the bet amount from the player's balance and update it.
-        let new_balance: u64 = player_balance - betAmount;
+        let new_balance: u64 = player_balance - bet_amount;
         Mapping::set(userBalances, new_session.player, new_balance);
 
         // Save the new game session into the mapping.
@@ -88,19 +88,19 @@ program headsortails.aleo {
         // Update the session with the result and whether the player has won.
         let updated_session: GameSession = GameSession {
             player: session.player,
-            betAmount: session.betAmount,
-            playerChoice: session.playerChoice,
+            bet_amount: session.bet_amount,
+            player_choice: session.player_choice,
             result: coinTossResult,
-            hasWon: session.playerChoice == coinTossResult, // Determine if the player's choice matches the result.
+            has_won: session.player_choice == coinTossResult, // Determine if the player's choice matches the result.
         };
 
         // Adjust the player's balance if they won.
         let player_balance: u64 = Mapping::get(userBalances, session.player);
 
         let new_balance: u64 = 0u64;
-          
-          if session.hasWon {
-            new_balance = player_balance + (session.betAmount * 2u64); // Double the bet amount if the player won.
+
+          if session.has_won {
+            new_balance = player_balance + (session.bet_amount * 2u64); // Double the bet amount if the player won.
             Mapping::set(userBalances, session.player, new_balance);
           } 
           
