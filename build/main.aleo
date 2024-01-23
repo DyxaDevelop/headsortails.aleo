@@ -6,10 +6,10 @@ struct GameToken:
 
 struct GameSession:
     player as address;
-    betAmount as u64;
-    playerChoice as u8;
+    bet_amount as u64;
+    player_choice as u8;
     result as u8;
-    hasWon as boolean;
+    has_won as boolean;
 
 
 mapping userBalances:
@@ -69,11 +69,11 @@ finalize playGame:
     get gameSessions[r0] into r1;
     rand.chacha into r2 as u8;
     rem r2 2u8 into r3;
-    is.eq r1.playerChoice r3 into r4;
-    cast r1.player r1.betAmount r1.playerChoice r3 r4 into r5 as GameSession;
+    is.eq r1.player_choice r3 into r4;
+    cast r1.player r1.bet_amount r1.player_choice r3 r4 into r5 as GameSession;
     get userBalances[r1.player] into r6;
-    mul r1.betAmount 2u64 into r7;
+    mul r1.bet_amount 2u64 into r7;
     add r6 r7 into r8;
     set r8 into userBalances[r1.player];
-    ternary r1.hasWon r8 0u64 into r9;
+    ternary r1.has_won r8 0u64 into r9;
     set r5 into gameSessions[r0];
